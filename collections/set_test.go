@@ -96,3 +96,14 @@ func TestNilSet(t *testing.T) {
 	assert.NotNil(t, s)
 	assert.True(t, s.InSet(1))
 }
+
+func TestStable(t *testing.T) {
+	t.Parallel()
+
+	arr := []int{1, 2, 3, 4, 5, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5}
+	s := MakeStableSet(arr)
+
+	assert.NotNil(t, s)
+	assert.Equal(t, 5, len(s))
+	assert.ElementsMatch(t, s, []int{1, 2, 3, 4, 5})
+}

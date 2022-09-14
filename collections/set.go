@@ -2,6 +2,20 @@ package collections
 
 type Set[T comparable] map[T]struct{}
 
+func MakeStableSet[T comparable](arr []T) []T {
+	set := Set[T]{}
+	out := make([]T, 0, len(arr))
+
+	for _, x := range arr {
+		if !set.InSet(x) {
+			set.Add(x)
+			out = append(out, x)
+		}
+	}
+
+	return out
+}
+
 func ToSet[T comparable](arr []T) Set[T] {
 	s := Set[T]{}
 
