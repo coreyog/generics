@@ -2,12 +2,14 @@ package collections
 
 import "sync"
 
+// SafeStack is a thread-safe LIFO stack.
 type SafeStack[T any] struct {
 	arr []T
 	mux *sync.RWMutex
 }
 
-func NewSafeStack[T any](arr []T) *SafeStack[T] {
+// NewSafeStack constructs a SafeStack and pushes all parameters in order.
+func NewSafeStack[T any](arr ...T) *SafeStack[T] {
 	ss := &SafeStack[T]{
 		mux: &sync.RWMutex{},
 	}
@@ -19,6 +21,7 @@ func NewSafeStack[T any](arr []T) *SafeStack[T] {
 	return ss
 }
 
+// IsEmpty returns true if the stack is nil or has a length of 0.
 func (s *SafeStack[T]) IsEmpty() (is bool) {
 	if s == nil {
 		return true
@@ -30,19 +33,21 @@ func (s *SafeStack[T]) IsEmpty() (is bool) {
 	return s.arr == nil || len(s.arr) == 0
 }
 
-func (s *SafeStack[T]) Push(value T) *SafeStack[T] {
+// Push adds elements to the top of the stack.
+func (s *SafeStack[T]) Push(value ...T) *SafeStack[T] {
 	if s == nil {
-		s = NewSafeStack[T](nil)
+		s = NewSafeStack[T]()
 	}
 
 	s.mux.Lock()
 	defer s.mux.Unlock()
 
-	s.arr = append(s.arr, value)
+	s.arr = append(s.arr, value...)
 
 	return s
 }
 
+// Pop removes and returns the top element of the stack.
 func (s *SafeStack[T]) Pop() (elem T, ok bool) {
 	if s == nil {
 		return [1]T{}[0], false
@@ -62,6 +67,7 @@ func (s *SafeStack[T]) Pop() (elem T, ok bool) {
 	return elem, true
 }
 
+// Peek returns the top element of the stack without removing it.
 func (s *SafeStack[T]) Peek() (elem T, ok bool) {
 	if s == nil {
 		return [1]T{}[0], false
@@ -77,7 +83,8 @@ func (s *SafeStack[T]) Peek() (elem T, ok bool) {
 	return s.arr[0], true
 }
 
-func (s *SafeStack[T]) Array() []T {
+// Slice returns a copy of the stack as a slice.
+func (s *SafeStack[T]) Slice() []T {
 	if s == nil {
 		return []T{}
 	}
@@ -88,6 +95,7 @@ func (s *SafeStack[T]) Array() []T {
 	return s.arr[:]
 }
 
+// Len returns the length of the stack.
 func (q *SafeStack[T]) Len() int {
 	if q == nil {
 		return 0

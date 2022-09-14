@@ -12,7 +12,7 @@ import (
 func TestBasicSafeSet(t *testing.T) {
 	t.Parallel()
 
-	s := NewSafeSet([]int{1, 2, 3, 4, 5, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5})
+	s := NewSafeSet(1, 2, 3, 4, 5, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5)
 	arr := []int{}
 
 	initCount := s.Len()
@@ -40,9 +40,10 @@ func TestBasicSafeSet(t *testing.T) {
 	assert.False(t, s.IsEmpty())
 
 	s.Delete(1)
+	s.Delete(1)
 	assert.False(t, s.InSet(1))
 
-	arr = s.Array()
+	arr = s.Slice()
 	sort.Ints(arr)
 	assert.ElementsMatch(t, arr, []int{2, 3, 4, 5})
 }
@@ -101,7 +102,7 @@ func TestSafeSetThreadSafety(t *testing.T) {
 
 	wg.Wait()
 
-	arr := ss.Array()
+	arr := ss.Slice()
 	sort.Ints(arr)
 
 	assert.Equal(t, total, ss.Len())

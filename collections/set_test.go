@@ -10,7 +10,7 @@ import (
 func TestBasicSet(t *testing.T) {
 	t.Parallel()
 
-	s := ToSet([]int{1, 2, 3, 4, 5, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5})
+	s := ToSet(1, 2, 3, 4, 5, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5)
 	arr := []int{}
 
 	initCount := len(s)
@@ -36,9 +36,10 @@ func TestBasicSet(t *testing.T) {
 	assert.False(t, s.IsEmpty())
 
 	s.Delete(1)
+	s.Delete(1) // tests that deleting a non-existent element doesn't panic
 	assert.False(t, s.InSet(1))
 
-	arr = s.Array()
+	arr = s.Slice()
 	sort.Ints(arr)
 	assert.ElementsMatch(t, arr, []int{2, 3, 4, 5})
 }
@@ -66,7 +67,7 @@ func TestStructSet(t *testing.T) {
 		Age:  33,
 	}
 
-	s := ToSet([]Person{alice, bob, corey, alice, bob, corey})
+	s := ToSet(alice, bob, corey, alice, bob, corey)
 
 	danielle := Person{
 		Name: alice.Name,
@@ -101,7 +102,7 @@ func TestStable(t *testing.T) {
 	t.Parallel()
 
 	arr := []int{1, 2, 3, 4, 5, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5}
-	s := MakeStableSet(arr)
+	s := MakeStableSet(arr...)
 
 	assert.NotNil(t, s)
 	assert.Equal(t, 5, len(s))

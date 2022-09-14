@@ -9,8 +9,8 @@ func (s *Stack[T]) IsEmpty() (is bool) {
 }
 
 // Push adds an element to the top of the stack.
-func (s *Stack[T]) Push(x T) {
-	*s = append(*s, x)
+func (s *Stack[T]) Push(x ...T) {
+	*s = append(*s, x...)
 }
 
 // Pop removes and returns the top element of the stack.

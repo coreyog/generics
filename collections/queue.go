@@ -9,8 +9,8 @@ func (q *Queue[T]) IsEmpty() (is bool) {
 }
 
 // Enqueue adds an element to the end of the queue.
-func (q *Queue[T]) Enqueue(x T) {
-	*q = append(*q, x)
+func (q *Queue[T]) Enqueue(x ...T) {
+	*q = append(*q, x...)
 }
 
 // Dequeue removes and returns the first element of the queue.

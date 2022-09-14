@@ -11,7 +11,7 @@ import (
 func TestBasicSafeStack(t *testing.T) {
 	t.Parallel()
 
-	s := NewSafeStack([]int{1, 2, 3, 4, 5})
+	s := NewSafeStack(1, 2, 3, 4, 5)
 	arr := []int{}
 
 	initCount := s.Len()
@@ -50,7 +50,7 @@ func TestNilSafeStack(t *testing.T) {
 	assert.Zero(t, i)
 	assert.Nil(t, s)
 
-	arr := s.Array()
+	arr := s.Slice()
 	assert.Empty(t, arr)
 	assert.NotNil(t, arr)
 	assert.Nil(t, s)
@@ -62,9 +62,9 @@ func TestNilSafeStack(t *testing.T) {
 	assert.True(t, b)
 	assert.NotNil(t, s)
 	assert.Equal(t, 1, s.Len())
-	assert.ElementsMatch(t, s.Array(), []int{1})
+	assert.ElementsMatch(t, s.Slice(), []int{1})
 
-	s = NewSafeStack[int](nil)
+	s = NewSafeStack[int]()
 
 	i, b = s.Pop()
 	assert.Zero(t, i)
@@ -82,7 +82,7 @@ func TestSafeStackThreadSafety(t *testing.T) {
 
 	const total = 1000
 
-	ss := NewSafeStack[int](nil)
+	ss := NewSafeStack[int]()
 
 	wg := &sync.WaitGroup{}
 

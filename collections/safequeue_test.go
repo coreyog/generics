@@ -12,10 +12,10 @@ import (
 func TestBasicSafeQueue(t *testing.T) {
 	t.Parallel()
 
-	q := NewSafeQueue([]int{1, 2, 3, 4, 5})
+	q := NewSafeQueue(1, 2, 3, 4, 5)
 	arr := []int{}
 
-	copy := q.Array()
+	copy := q.Slice()
 
 	initCount := q.Len()
 
@@ -62,7 +62,7 @@ func TestNilSafeQueue(t *testing.T) {
 	assert.NotNil(t, q)
 	assert.Equal(t, 1, q.Len())
 
-	q = NewSafeQueue[int](nil)
+	q = NewSafeQueue[int]()
 
 	i, b = q.Dequeue()
 	assert.Zero(t, i)
@@ -80,7 +80,7 @@ func TestSafeQueueThreadSafety(t *testing.T) {
 
 	const total = 1000
 
-	ss := NewSafeQueue[int](nil)
+	ss := NewSafeQueue[int]()
 
 	wg := &sync.WaitGroup{}
 
@@ -98,7 +98,7 @@ func TestSafeQueueThreadSafety(t *testing.T) {
 
 	wg.Wait()
 
-	arr := ss.Array()
+	arr := ss.Slice()
 	sort.Ints(arr)
 
 	assert.Equal(t, total*cpus, ss.Len())
